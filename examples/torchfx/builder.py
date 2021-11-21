@@ -183,12 +183,11 @@ class _ClassDeclAndInitBuilder(_Builder):
             operand: Optional[ir.OpResult] = None
             # TODO: this should be meta-programmable
             if isinstance(value, bool):
-                with self.context:
+                with self.context, self.loc:
                     bool_type = PythonType(bool).to_mlir(self.context)
                     type_attr = ir.TypeAttr.get(bool_type)
                     bool_attr = ir.BoolAttr.get(value)
                     operand = torch_d.ConstantBoolOp(
-                        bool_type,
                         bool_attr,
                         loc=self.loc,
                         ip=self.module_ip).result
